@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calculator</title>
+    <link rel="stylesheet" href="./health-tools.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>โปรแกรมคำนวนเกี่ยวกับสุขภาพ</h1>
+        <h3>มาดูแลสุขภาพกันเถอะ !!</h3>
+
+        <div class="grid-container">
+            <div class="input-container">
+
+                <!-- เลือกเพศ -->
+                <div class="calculator-container">
+                    <label class="form-label">เพศ</label>
+                    <form class="calculator-form">
+                        <div class="gender-option">
+                            <input type="radio" id="male" name="gender" value="1" checked>
+                            <label for="male">
+                                <span class="icon icon-male">♂</span> ชาย
+                            </label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="female" name="gender" value="0">
+                            <label for="female">
+                                <span class="icon icon-female">♀</span> หญิง
+                            </label>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- น้ำหนัก && ส่วนสูง -->
+                <div class="weight-height-form">
+                    <form class="input-group">
+                        <div class="weight-box">
+                            <label class="input-label">น้ำหนัก</label>
+                            <input type="text" id="weight" inputmode="numeric" pattern="[0-9]*"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)" placeholder=" ">
+                            <span class="unit">กก.</span>
+                        </div>
+
+                        <div class="height-box">
+                            <label class="input-label">ส่วนสูง</label>
+                            <input type="text" id="height" inputmode="numeric" pattern="[0-9]*"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)" placeholder=" ">
+                            <span class="unit">ซม.</span>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- อายุ -->
+                <div class="age-form">
+                    <div class="age-box">
+                        <label class="input-label">อายุ</label>
+                        <input type="text" id="age" inputmode="numeric" pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)" placeholder=" ">
+                        <span class="unit">ปี</span>
+                    </div>
+                </div>
+
+                <!-- กิจกรรม -->
+                <div class="activity-form">
+                    <form action=" ">
+                        <label class="input-label">กิจกรรม</label>
+                        <select id="activity" class="activity-box">
+                            <option value=" " disabled selected hidden>กรุณาเลือกกิจกรรม</option>
+                            <option value="1.2">นั่งทำงานอยู่กับที่ ไม่ได้ออกกำลังกายเลย</option>
+                            <option value="1.375">ออกกำลังกายเบาๆ 1-3 วันต่อสัปดาห์</option>
+                            <option value="1.55">ออกกำลังกายปานกลาง 3-5 วันต่อสัปดาห์</option>
+                            <option value="1.7">ออกกำลังกายหนัก 6-7 วันต่อสัปดาห์</option>
+                            <option value="1.9">ออกกำลังกายอย่างหนักเป็นประจำเพื่อซ้อมในการแข่งขัน</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="buttom">
+                    <button class="calc" onclick="getActivityValue()">คำนวน</button>
+                </div>
+
+                <div class="comment">
+                    <p><strong>📌 วิธีใช้งาน:</strong> กรุณากรอกข้อมูล <strong>เพศ</strong>, <strong>น้ำหนัก</strong>,
+                        <strong>ส่วนสูง</strong>, <strong>อายุ</strong> และ <strong>กิจกรรม</strong>
+                        เพื่อดูผลลัพธ์ด้านสุขภาพที่เหมาะสมกับคุณ
+                    </p>
+                    <p><strong>BMI (Body Mass Index)</strong>: ดัชนีมวลกาย ใช้บอกว่าคุณผอม ปกติ หรืออ้วน
+                        จากน้ำหนักเทียบกับส่วนสูง</p>
+                    <p><strong>BMR (Basal Metabolic Rate)</strong>: พลังงานพื้นฐานที่ร่างกายต้องการใช้ขณะพัก</p>
+                    <p><strong>TDEE (Total Daily Energy Expenditure)</strong>: พลังงานที่คุณใช้จริงในแต่ละวัน
+                        รวมกิจกรรมทั้งหมด</p>
+                    <p><strong>PI (Ponderal Index)</strong>: ดัชนีวัดความสมส่วนของรูปร่าง
+                        เหมาะกับคนที่รูปร่างสูงหรือผอมมาก <strong>โดยมีค่ามาตรฐานดังนี้:</strong><br> ( ต่ำกว่า 11 =
+                        ผอมมาก, 11–13 = สมส่วน, มากกว่า 13 = อ้วน )</p>
+                    <p><strong>คำแนะนำ:</strong> ใช้ข้อมูลนี้ในการวางแผน ลด หรือ เพิ่ม น้ำหนักได้อย่างเหมาะสม</p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="right-column">
+                <!-- bmi -->
+                <div class="bmi-container">
+                    <h2 class="bmi-header">ดัชนีมวลกาย (BMI)</h2>
+
+                    <div class="categories">
+                        <div class="category">น้ำหนักต่ำกว่าเกณฑ์</div>
+                        <div class="category">น้ำหนักปกติ</div>
+                        <div class="category">น้ำหนักเกิน</div>
+                        <div class="category">โรคอ้วน</div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <div class="progress-indicator" id="bmiPointer"></div>
+                    </div>
+
+                    <table class="bmi-table">
+                        <tr>
+                            <td class="label-cell">ดัชนีมวลกาย (BMI)</td>
+                            <td class="value-cell"><span id="bmi"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">หมวดหมู่ BMI</td>
+                            <td class="value-cell"><span id="bmiID"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">ช่วง BMI ที่เหมาะสม</td>
+                            <td class="value-cell"><span id="bmiGood"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">น้ำหนักที่เหมาะสมสำหรับความสูง</td>
+                            <td class="value-cell"><span id="weightGood"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">น้ำหนักที่จะเพิ่มเพื่อให้ถึง BMI 18.5 กก./ตร.ม.</td>
+                            <td class="value-cell"><span id="weight-Gain"></span> </td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">น้ำหนักที่จะลดเพื่อให้ถึง BMI 25 กก./ตร.ม.</td>
+                            <td class="value-cell"><span id="weight-Lose"></span> </td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">ดัชนี Ponderal</td>
+                            <td class="value-cell"><span id="piStatus"></span> </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- tdee -->
+                <div class="tdee-container">
+                    <div class="tdee-header">
+                        อัตราการเผาผลาญพื้นฐาน (BMR)
+                    </div>
+
+                    <div class="tdee-value">
+                        <span id="bmr"></span>
+                    </div>
+
+                    <div class="tdee-header">
+                        พลังงานที่ต้องการในแต่ละวัน (TDEE)
+                    </div>
+
+                    <div class="tdee-value">
+                        <span id="tdee"></span>
+                    </div>
+
+                    <table class="tdee-table">
+                        <thead>
+                            <tr>
+                                <th> </th>
+                                <th>น้ำหนัก</th>
+                                <th>แคลอรี่/วัน</th>
+                                <th>เปอร์เซ็นต์</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge reduce-severe">ลดน้ำหนักอย่างมาก</span>
+                                </td>
+                                <td>-1 kg/week</td>
+                                <td><span id="tdee1"></span></td>
+                                <td>56%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge reduce-moderate">ลดน้ำหนัก</span>
+                                </td>
+                                <td>-0.5 kg/week</td>
+                                <td><span id="tdee2"></span></td>
+                                <td>78%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge reduce-light">ลดน้ำหนักเล็กน้อย</span>
+                                </td>
+                                <td>-0.25 kg/week</td>
+                                <td><span id="tdee3"></span></td>
+                                <td>89%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge maintain">รักษาน้ำหนัก</span>
+                                </td>
+                                <td>0 kg/week</td>
+                                <td><span id="tdee4"></span></td>
+                                <td>100%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge increase-light">เพิ่มน้ำหนักเล็กน้อย</span>
+                                </td>
+                                <td>+0.25 kg/week</td>
+                                <td><span id="tdee5"></span></td>
+                                <td>111%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge increase-moderate">เพิ่มน้ำหนัก</span>
+                                </td>
+                                <td>+0.5 kg/week</td>
+                                <td><span id="tdee6"></span></td>
+                                <td>122%</td>
+                            </tr>
+                            <tr>
+                                <td class="goal-cell">
+                                    <span class="goal-badge increase-severe">เพิ่มน้ำหนักอย่างมาก</span>
+                                </td>
+                                <td>+1 kg/week</td>
+                                <td><span id="tdee7"></span></td>
+                                <td>144%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./health-tools.js"></script>
+</body>
+
+</html>
